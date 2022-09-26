@@ -228,7 +228,7 @@ func release(source string, destination string) error {
 	}
 
         tagName := *sourceRelease.TagName
-        setActionOutput("tag", tagName[12:])
+        setActionOutput("tag", tagName)
 
 	return nil
 }

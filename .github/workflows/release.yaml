@@ -83,6 +83,9 @@ jobs:
      
       - name: Push artifacts to release branch
         run: |
+          mkdir -p publish
+          cd publish
+          
           git config --local user.email "891708+soffchen@users.noreply.github.com"
           git config --local user.name "github-action[bot]"
           git fetch
@@ -90,7 +93,7 @@ jobs:
           git checkout --orphan release-orphan
           git rm -rf .
           
-          ls -la
+          ls -la ../
           
           git add geoip.db
           git add geoip-cn.db

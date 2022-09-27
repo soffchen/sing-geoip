@@ -50,6 +50,13 @@ jobs:
           git branch -D release
           git branch -m release
 
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release
+          force: true
+
       - name: Create a release
         if: steps.build.outputs.skip != 'true'
         id: create_release

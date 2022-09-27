@@ -2,7 +2,7 @@ name: Release
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 1 * * 4"
+    - cron: "0 1 * * *"
 jobs:
   build:
     name: Build
@@ -22,8 +22,6 @@ jobs:
           go-version: ${{ steps.version.outputs.go_version }}
       - name: Build geoip
         id: build
-        env:
-          NO_SKIP: true
         run: go run -v .
       - name: Generate sha256 hash
         if: steps.build.outputs.skip != 'true'
@@ -57,6 +55,13 @@ jobs:
           branch: release
           force: true
 
+      - name: Purge CDN Cache
+        run: |
+          curl -L https://purge.jsdelivr.net/gh/soffchen/sing-geoip@release/geoip.db > /dev/null 2>&1
+          curl -L https://purge.jsdelivr.net/gh/soffchen/sing-geoip@release/geoip-cn.db > /dev/null 2>&1
+          curl -L https://purge.jsdelivr.net/gh/soffchen/sing-geoip@release/geoip.db.sha256sum > /dev/null 2>&1
+          curl -L https://purge.jsdelivr.net/gh/soffchen/sing-geoip@release/geoip-cn.db.sha256sum > /dev/null 2>&1
+        
       - name: Create a release
         if: steps.build.outputs.skip != 'true'
         id: create_release

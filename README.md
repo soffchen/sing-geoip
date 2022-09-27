@@ -1,6 +1,6 @@
 # geoip.db for sing-box
 
-This project manages a list of ips, to be used as geoips for routing purpose in sing-box.
+This project manages a list of ips, to be used as geoips for routing purpose in [SagerNet/sing-box](https://github.com/SagerNet/sing-box).
 
 Based on [Loyalsoldier/geoip](https://github.com/Loyalsoldier/geoip)
 

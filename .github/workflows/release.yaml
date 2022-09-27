@@ -79,3 +79,21 @@ jobs:
           asset_path: ./geoip-cn.db.sha256sum
           asset_name: geoip-cn.db.sha256sum
           asset_content_type: text/plain
+          
+      - name: Push artifacts to release branch
+        run: |
+          git config --local user.email "891708+soffchen@users.noreply.github.com"
+          git config --local user.name "github-action[bot]"
+          git fetch
+          git checkout release
+          git checkout --orphan release-orphan
+          git rm -rf .
+
+          git add geoip.db
+          git add geoip-cn.db
+          git add geoip.db.sha256sum
+          git add geoip-cn.db.sha256sum
+          
+          git commit -am "Updated at $(date)"
+          git branch -D release
+          git branch -m release

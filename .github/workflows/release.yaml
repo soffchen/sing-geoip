@@ -28,6 +28,14 @@ jobs:
         run: |
           sha256sum geoip.db > geoip.db.sha256sum
           sha256sum geoip-cn.db > geoip-cn.db.sha256sum
+      - name: Copy files into dist
+        if: steps.build.outputs.skip != 'true'
+        run: |
+          sha256sum geoip.db > geoip.db.sha256sum
+          sha256sum geoip-cn.db > geoip-cn.db.sha256sum
+          mkdir -p dist
+          cp geoip*.db dist/
+          cp geoip*.sha256sum dist/
       - name: Create a release
         if: steps.build.outputs.skip != 'true'
         id: create_release
@@ -83,9 +91,6 @@ jobs:
      
       - name: Push artifacts to release branch
         run: |
-          mkdir -p publish
-          cd publish
-          
           git config --local user.email "891708+soffchen@users.noreply.github.com"
           git config --local user.name "github-action[bot]"
           git fetch
@@ -93,7 +98,7 @@ jobs:
           git checkout --orphan release-orphan
           git rm -rf .
           
-          ls -la ../
+          ls -la
           
           git add geoip.db
           git add geoip-cn.db

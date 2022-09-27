@@ -22,12 +22,34 @@ jobs:
           go-version: ${{ steps.version.outputs.go_version }}
       - name: Build geoip
         id: build
+        env:
+          NO_SKIP: true
         run: go run -v .
       - name: Generate sha256 hash
         if: steps.build.outputs.skip != 'true'
         run: |
           sha256sum geoip.db > geoip.db.sha256sum
           sha256sum geoip-cn.db > geoip-cn.db.sha256sum
+          
+      - name: Push artifacts to release branch
+        if: steps.build.outputs.skip != 'true'
+        run: |
+          git config --local user.email "891708+soffchen@users.noreply.github.com"
+          git config --local user.name "github-action[bot]"
+          git fetch
+          git checkout release
+          git checkout --orphan release-orphan
+          git rm -rf .
+          
+          git add geoip.db
+          git add geoip-cn.db
+          git add geoip.db.sha256sum
+          git add geoip-cn.db.sha256sum
+          
+          git commit -am "Updated at $(date)"
+          git branch -D release
+          git branch -m release
+
       - name: Create a release
         if: steps.build.outputs.skip != 'true'
         id: create_release
@@ -79,23 +101,3 @@ jobs:
           asset_path: ./geoip-cn.db.sha256sum
           asset_name: geoip-cn.db.sha256sum
           asset_content_type: text/plain
-          
-     
-      - name: Push artifacts to release branch
-        if: steps.build.outputs.skip != 'true'
-        run: |
-          git config --local user.email "891708+soffchen@users.noreply.github.com"
-          git config --local user.name "github-action[bot]"
-          git fetch
-          git checkout release
-          git checkout --orphan release-orphan
-          git rm -rf .
-          
-          git add geoip.db
-          git add geoip-cn.db
-          git add geoip.db.sha256sum
-          git add geoip-cn.db.sha256sum
-          
-          git commit -am "Updated at $(date)"
-          git branch -D release
-          git branch -m release

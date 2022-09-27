@@ -31,11 +31,7 @@ jobs:
       - name: Copy files into dist
         # if: steps.build.outputs.skip != 'true'
         run: |
-          sha256sum geoip.db > geoip.db.sha256sum
-          sha256sum geoip-cn.db > geoip-cn.db.sha256sum
-          mkdir -p dist
-          cp geoip*.db dist/
-          cp geoip*.sha256sum dist/
+          ls -la
       - name: Create a release
         if: steps.build.outputs.skip != 'true'
         id: create_release

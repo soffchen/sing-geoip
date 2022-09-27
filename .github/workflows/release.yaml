@@ -80,9 +80,7 @@ jobs:
           asset_name: geoip-cn.db.sha256sum
           asset_content_type: text/plain
           
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master
-      
+     
       - name: Push artifacts to release branch
         run: |
           git config --local user.email "891708+soffchen@users.noreply.github.com"
@@ -91,6 +89,8 @@ jobs:
           git checkout release
           git checkout --orphan release-orphan
           git rm -rf .
+          
+          ls -la
           
           git add geoip.db
           git add geoip-cn.db

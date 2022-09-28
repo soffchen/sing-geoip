@@ -26,8 +26,11 @@ jobs:
       - name: Generate sha256 hash
         if: steps.build.outputs.skip != 'true'
         run: |
+          mkdir dist
           sha256sum geoip.db > geoip.db.sha256sum
           sha256sum geoip-cn.db > geoip-cn.db.sha256sum
+          cp geoip.db* dist/
+          cp geoip-cn.db* dist/
           
       - name: Push artifacts to release branch
         if: steps.build.outputs.skip != 'true'
@@ -39,6 +42,7 @@ jobs:
           git checkout --orphan release-orphan
           git rm -rf .
           
+          cp dist/* .
           git add geoip.db
           git add geoip-cn.db
           git add geoip.db.sha256sum

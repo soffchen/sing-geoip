@@ -27,8 +27,8 @@ jobs:
         if: steps.build.outputs.skip != 'true'
         run: |
           mkdir dist
-          sha256sum geoip.db > geoip.db.sha256sum
-          sha256sum geoip-cn.db > geoip-cn.db.sha256sum
+          sha256sum geoip.db > dist/geoip.db.sha256sum
+          sha256sum geoip-cn.db > dist/geoip-cn.db.sha256sum
           cp geoip.db* dist/
           cp geoip-cn.db* dist/
           

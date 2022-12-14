@@ -191,8 +191,8 @@ func release(source string, destination string) error {
 	} else {
 		if os.Getenv("NO_SKIP") != "true" && strings.Contains(*destinationRelease.TagName, *sourceRelease.TagName) {
 			logrus.Info("already latest")
-			setActionOutput("skip", "true")
-			return nil
+			//setActionOutput("skip", "true")
+			//return nil
 		}
 	}
 	binary, err := download(sourceRelease)

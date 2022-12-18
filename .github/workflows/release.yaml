@@ -2,7 +2,7 @@ name: Release
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 0 * * *"
+    - cron: "*/30 0 * * *"
 jobs:
   build:
     name: Build
